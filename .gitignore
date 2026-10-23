@@ -10,3 +10,6 @@ ocr_dataset/
 photos/
 photos.rar
 tablet_lines/
+
+.ipynb_checkpoints/
+create_assyrian_dataset.py.
