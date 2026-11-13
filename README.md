@@ -2,15 +2,19 @@
 
 Scan de tablettes cunéiformes → lecture des signes (OCR) → translittération → traduction (FR et autres langues). Cible : application Web + Android.
 
-## État actuel (prototype Python)
+## Pipeline en 7 étapes
 
-Pipeline visé :
+1. **Acquisition** : photo/scan de la tablette, contrôle qualité (netteté, éclairage)
+2. **Prétraitement** : redressement, débruitage, binarisation (OpenCV)
+3. **Segmentation** : lignes (seuillage adaptatif + projection horizontale), puis signes : `full_pipeline.py`, `line_ocr_pipeline.py`
+4. **Reconnaissance (OCR)** : signe → identifiant de signe : `train_ocr.py`, `vision_ocr_inference.py`, `cluster_ocr.py`
+5. **Translittération** : signes → akkadien translittéré
+6. **Traduction** : akkadien → anglais (modèle seq2seq `cuneiformbase-400m`, `cuneiscania_cli.py`), puis EN → FR et autres langues (à créer)
+7. **Restitution** : résultat avec score de confiance, correction manuelle, export, affichage Web/Android
 
-1. **Photo** de la tablette
-2. **Segmentation en lignes** (seuillage adaptatif + projection horizontale) : `full_pipeline.py`, `line_ocr_pipeline.py`
-3. **Reconnaissance des signes** (OCR vision) : `train_ocr.py`, `vision_ocr_inference.py`, `cluster_ocr.py`
-4. **Translittération → traduction** akkadien vers anglais (modèle seq2seq `cuneiformbase-400m`) : `cuneiscania_cli.py`
-5. **Évaluation** : `benchmark.py`, `test_model.py`, `test_pipeline.py`
+Évaluation transverse : `benchmark.py`, `test_model.py`, `test_pipeline.py`.
+
+Détail des entrées/sorties de chaque étape dans `docs/ARCHITECTURE.md`.
 
 ## Carte des scripts
 
