@@ -13,3 +13,9 @@ tablet_lines/
 
 .ipynb_checkpoints/
 create_assyrian_dataset.py.
+
+runs/
+runs_test/
+tests/assets/
+__pycache__/
+*.pyc

@@ -1,0 +1,10 @@
+# V1 : le socle ne demande pas de GPU
+pydantic>=2.6
+numpy>=1.26
+opencv-python-headless>=4.9
+pillow>=10.0
+pandas>=2.1
+
+# entraînement (à installer sur la machine de calcul, pas forcément ailleurs)
+# torch>=2.3
+# torchvision>=0.18
