@@ -207,3 +207,32 @@ archiver, pas à corriger.
 File d'attente et reprise : table `runs`/`jobs` en Postgres (`SKIP LOCKED`), gateway
 FastAPI avec upload présigné, worker qui exécute les étapes. Les contrats ne bougent
 plus, c'est ce qui permet de brancher les modèles ensuite sans tout réécrire.
+
+
+## API FastAPI (Sprint 1)
+
+L'API HTTP enveloppe le pipeline existant sans modifier ses étapes ni ses contrats.
+
+Installation et démarrage local :
+
+```bash
+pip install -r requirements.txt
+uvicorn api.main:app --reload
+```
+
+Puis ouvrir `http://127.0.0.1:8000/docs` pour l'interface Swagger.
+
+Endpoints V1 :
+- `GET /health` : état de l'API et version du pipeline.
+- `POST /api/v1/analyses` : téléverse une image (multipart/form-data) et lance le pipeline.
+- `GET /api/v1/analyses` : liste les runs locaux.
+- `GET /api/v1/analyses/{run_id}` : retourne le contrat `TabletResult`.
+- `GET /api/v1/analyses/{run_id}/report` : rapport HTML.
+- `GET /api/v1/analyses/{run_id}/artifacts/{artifact_path}` : artefact image.
+
+Configuration facultative :
+- `CUNEISCAN_RUNS_DIR` : dossier de stockage des runs (défaut : `runs`).
+- `CUNEISCAN_MAX_UPLOAD_BYTES` : taille maximale d'un upload (défaut : 20 Mio).
+
+L'exécution est synchrone dans cette première version : la requête attend la fin du pipeline.
+Authentification, file de tâches, stockage objet et base PostgreSQL restent hors périmètre de ce sprint.
