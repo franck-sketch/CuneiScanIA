@@ -34,3 +34,12 @@ def test_artifact_path_cannot_escape_run_directory(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "RUNS_ROOT", tmp_path)
     response = client.get("/api/v1/analyses/safe-run/artifacts/../../secret.txt")
     assert response.status_code in (400, 404)
+
+
+def test_rejects_unsafe_tablet_id_before_processing():
+    response = client.post(
+        "/api/v1/analyses",
+        data={"tablet_id": "../outside"},
+        files={"file": ("tablet.png", b"image bytes", "image/png")},
+    )
+    assert response.status_code == 400
