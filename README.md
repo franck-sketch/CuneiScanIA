@@ -202,11 +202,12 @@ mesurait en plus sa précision sur ses données d'entraînement, et `align_ocr_d
 assignait les labels cycliquement (`ACCADIAN_CLASSES[idx % 14]`). Les deux sont à
 archiver, pas à corriger.
 
-## Prochaine étape
+## Chantier suivant
 
-File d'attente et reprise : table `runs`/`jobs` en Postgres (`SKIP LOCKED`), gateway
-FastAPI avec upload présigné, worker qui exécute les étapes. Les contrats ne bougent
-plus, c'est ce qui permet de brancher les modèles ensuite sans tout réécrire.
+La prochaine évolution sera la file de tâches et la reprise serveur : tables
+`runs`/`jobs` en PostgreSQL (`SKIP LOCKED`), worker séparé et stockage objet.
+L'API du Sprint 1 reste volontairement synchrone et locale pour valider les contrats
+et le flux d'import avant d'introduire cette infrastructure.
 
 
 ## API FastAPI (Sprint 1)
