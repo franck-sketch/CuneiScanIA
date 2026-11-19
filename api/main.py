@@ -22,6 +22,7 @@ RUNS_ROOT = Path(os.getenv("CUNEISCAN_RUNS_DIR", "runs"))
 MAX_UPLOAD_BYTES = int(os.getenv("CUNEISCAN_MAX_UPLOAD_BYTES", str(20 * 1024 * 1024)))
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff", ".bmp"}
 RUN_ID_PATTERN = re.compile(r"^[A-Za-z0-9_.-]{1,180}$")
+TABLET_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 
 app = FastAPI(
     title="CuneiScanIA API",
@@ -58,6 +59,9 @@ def create_analysis(
     face_index: int = Form(default=0, ge=0),
 ) -> TabletResult:
     """Importe une image et exécute le pipeline existant de bout en bout."""
+    if tablet_id is not None and not TABLET_ID_PATTERN.fullmatch(tablet_id):
+        raise HTTPException(status_code=400, detail="tablet_id doit contenir 1 à 80 caractères alphanumériques, ., _ ou -.")
+
     suffix = Path(file.filename or "").suffix.lower()
     if suffix not in ALLOWED_EXTENSIONS:
         raise HTTPException(
